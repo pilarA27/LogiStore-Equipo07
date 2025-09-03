@@ -1,16 +1,25 @@
 package logiStore.test;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
-// import org.junit.jupiter.api.Assertions;
-// import org.junit.jupiter.api.Test;
+import Library.Clases.Sector;
 
-// public class SectorTest extends Assertions {
-//     @Test
-//     void agregarProducto(){
+public class SectorTest{
 
-//     }
+    @Test
+    void nuevoProducto(){
+        Sector sectorTest = new Sector(1, "Congelados");
+        sectorTest.nuevoProducto("Helado", 1);
+        assertEquals(1, sectorTest.listaProductos.size());
+    }
 
-//     @Test
-//     void eliminarProducto(){
+    @Test
+    void agregarProducto(){
+
+    }
+
+    @Test
+    void eliminarProducto(){
     
-//     }
-// }
+    }
+}
