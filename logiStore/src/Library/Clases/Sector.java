@@ -24,42 +24,45 @@ public class Sector {
     }
 
     //Se crea un nuevo producto
-    public void nuevoProducto(String nombreProd, int codigoProd){
+    public boolean nuevoProducto(String nombreProd, int codigoProd){
         for(Producto producto : listaProductos){
             if (producto.codigo == codigoProd){
                 System.out.println("El producto ya existe en este sector");
-                return;
+                return false;
             }
         }
         listaProductos.add(new Producto(nombreProd, codigoProd, 0, nombre));
         System.out.println("El producto " + nombreProd + " se agregó con exito.");
+        return true;
     }
 
     //Se agrega el stock deseado al producto de elección
-    public void agregarProducto(int codigoProd, int stock){
+    public boolean agregarProducto(int codigoProd, int stock){
         for(Producto producto : listaProductos){
             if(producto.codigo == codigoProd){
                 producto.stock += stock;
                 System.out.println("Se agregó " + stock + " de " + producto.nombre);
-                return;
+                return true;
             }
         }
         System.out.println("No se encontró el producto solicitado.");
+        return false;
     }
 
     //Se resta el stock deseado al producto de elección
-    public void eliminarProducto(int codigoProd, int stock){
+    public boolean eliminarProducto(int codigoProd, int stock){
         for(Producto producto : listaProductos){
             if(producto.codigo == codigoProd){
                 if(producto.stock < stock){
                     System.out.println("No hay stock suficiente.");
-                    return;
+                    return false;
                 }
                 producto.stock -= stock;
                 System.out.println("Se restó " + stock + " de " + producto.nombre);
-                return;
+                return true;
             }
         }
         System.out.println("No se encontró el producto solicitado.");
+        return false;
     }
 }
