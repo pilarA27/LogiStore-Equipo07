@@ -1,1 +1,6 @@
-## codigoProducto | cantidadSolicitada ##
+1, 2, 7
+1, 4,
+1, 2, 4 
+1, 6, 7
+4, 3, 1
+1, 2, 4 
