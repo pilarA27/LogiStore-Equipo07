@@ -8,12 +8,6 @@ public class Sector {
     public int id;
     public String nombre;
 
-    //Atributos para manejar productos
-    public String nombreProd;
-    public int codigoProd;
-    public int stock;
-    public String sector;
-
     //Lista de productos
     public List<Producto> listaProductos = new ArrayList<>();
 
@@ -24,14 +18,14 @@ public class Sector {
     }
 
     //Se crea un nuevo producto
-    public boolean nuevoProducto(String nombreProd, int codigoProd){
+    public boolean nuevoProducto(String nombreProd, int codigoProd, int stockInicial){
         for(Producto producto : listaProductos){
-            if (producto.codigo == codigoProd){
+            if (producto.getCodigo() == codigoProd){
                 System.out.println("El producto ya existe en este sector");
                 return false;
             }
         }
-        listaProductos.add(new Producto(nombreProd, codigoProd, 0, nombre));
+        listaProductos.add(new Producto(nombreProd, codigoProd, stockInicial, this));
         System.out.println("El producto " + nombreProd + " se agregó con exito.");
         return true;
     }
@@ -39,9 +33,9 @@ public class Sector {
     //Se agrega el stock deseado al producto de elección
     public boolean agregarProducto(int codigoProd, int stock){
         for(Producto producto : listaProductos){
-            if(producto.codigo == codigoProd){
-                producto.stock += stock;
-                System.out.println("Se agregó " + stock + " de " + producto.nombre);
+            if(producto.getCodigo() == codigoProd){
+                producto.setStock(producto.getStock() + stock);
+                System.out.println("Se agregó " + stock + " de " + producto.getNombre());
                 return true;
             }
         }
