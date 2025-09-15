@@ -4,11 +4,40 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
+/*
+Escenario
+En un mundo donde el comercio y la distribución de productos se realizan a gran
+escala, la eficiencia en la gestión de almacenes se ha vuelto un factor crítico para el
+éxito de cualquier empresa. La UCU ha decidido desarrollar LogiStore, un simulador
+de almacén logístico pensado para entrenar a futuros profesionales en la administración
+de inventarios, pedidos y sectores de almacenamiento. El sistema permitirá coordinar
+productos, sectores, unidades y pedidos, asegurando que la operación del almacén sea ágil
+y confiable.
+En LogiStore, el almacén se organiza en sectores, que representan áreas físicas o lógicas
+donde se guardan productos. Cada producto tiene atributos como nombre, código, cantidad disponible y ubicación en el sector correspondiente. Los productos deben modelarse
+de tal manera que puedan realizarse operaciones de inserción, búsqueda, eliminación y
+consultas rápidas, garantizando que no haya duplicados y que la información se mantenga
+actualizada.
+Cuando se procesa un pedido, los productos solicitados se agregan a un flujo de procesamiento, que sigue un orden secuencial basado en la llegada de los pedidos. Esta cola
+asegura que los pedidos se atiendan de manera justa y organizada. Mientras tanto, se mantiene un historial de pedidos, que registra los pedidos ya procesados y permite consultar
+o revertir operaciones recientes en caso de errores.
+El correcto funcionamiento de LogiStore depende de la administración eficiente de los
+sectores, las listas de productos, los pedidos por realizar y el historial, garantizando que
+las operaciones de agregar, quitar, buscar y consultar se realicen de manera coherente y
+sin pérdida de información.
+
+Objetivo del proyecto
+Desarrollar un simulador por consola del almacén LogiStore que permita gestionar sectores y productos, procesar pedidos y mantener un historial de operaciones, empleando
+exclusivamente estructuras lineales (listas, pilas y colas) y las operaciones básicas asociadas vistas en clase. El sistema deberá permitir agregar, buscar, eliminar y listar productos
+en cada sector, administrar los pedidos y registrar el historial de pedidos procesador, manteniendo siempre la integridad y coherencia de los datos.
+ */
 public class Almacen {
     //Lista de sectores
-    public List<Sector> listaSectores = new ArrayList<>();
+    public Queue<Pedido> colaPedidos = new LinkedList<>();
 
     //Lista de pedidos pendientes
 
@@ -20,7 +49,7 @@ public class Almacen {
 
 
     //ADMINISTRACIÓN DE SECTORES
-
+    
     //Se crea un sector con un identificador único
     public boolean crearSector(int idSector, String nombreSector){
         for(Sector sector : listaSectores){
@@ -34,8 +63,11 @@ public class Almacen {
         return true;
     }
 
-    public void eliminarSector(){
+    public void eliminarSector(int id){
         //Elimina un sector
+        for(Sector sector : listaSectores) {
+            if (sector.)
+        }
     }
 
     public void verSectores(){

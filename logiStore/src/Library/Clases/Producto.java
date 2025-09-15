@@ -1,12 +1,13 @@
 package Library.Clases;
-import Library.Clases.Sector;
+
+
 public class Producto {
     public String nombre;
     public int codigo;
     public int stock;
-    public String sector;
+    public Sector sector;
 
-    public Producto(String nombre, int codigo, int stock, String sector){
+    public Producto(String nombre, int codigo, int stock, Sector sector){
         this.nombre = nombre;
         this.codigo = codigo;
         this.stock = stock;
@@ -37,11 +38,30 @@ public class Producto {
         return stock;
     }
 
-    public void setSector(String sector) {
+    public void setSector(Sector sector) {
         this.sector = sector;
     }
 
-    public String getSector() {
+    public Sector getSector() {
         return sector;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Producto producto = (Producto) obj;
+        return codigo == producto.codigo;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(codigo);
     }
 }
