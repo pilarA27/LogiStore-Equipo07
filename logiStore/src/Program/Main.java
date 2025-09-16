@@ -11,14 +11,14 @@ public class Main {
         supermercado.crearSector(2, "Alimentos");
 
         // Agregar productos a Electrodomésticos
-        supermercado.listaSectores.get(0).nuevoProducto("Heladera", 1);
-        supermercado.listaSectores.get(0).nuevoProducto("Microondas", 2);
+        supermercado.listaSectores.get(0).nuevoProducto("Heladera", 1, 0);
+        supermercado.listaSectores.get(0).nuevoProducto("Microondas", 2, 10);
         supermercado.listaSectores.get(0).agregarProducto(1, 5); // 5 heladeras
         supermercado.listaSectores.get(0).agregarProducto(2, 10); // 10 microondas
 
         // Agregar productos a Alimentos
-        supermercado.listaSectores.get(1).nuevoProducto("Arroz", 5);
-        supermercado.listaSectores.get(1).nuevoProducto("Fideos", 6);
+        supermercado.listaSectores.get(1).nuevoProducto("Arroz", 5, 4);
+        supermercado.listaSectores.get(1).nuevoProducto("Fideos", 6, 1);
         supermercado.listaSectores.get(1).agregarProducto(5, 20); // 20 arroz
         supermercado.listaSectores.get(1).agregarProducto(6, 30); // 30 fideos
 
