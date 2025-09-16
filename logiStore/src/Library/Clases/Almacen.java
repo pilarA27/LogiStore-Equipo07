@@ -1,5 +1,6 @@
 package Library.Clases;
 
+import Library.Clases.Sector;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Stack;
 
 /*
 Escenario
@@ -36,24 +38,25 @@ exclusivamente estructuras lineales (listas, pilas y colas) y las operaciones b�
 en cada sector, administrar los pedidos y registrar el historial de pedidos procesador, manteniendo siempre la integridad y coherencia de los datos.
  */
 public class Almacen {
-    //Lista de sectores
+
     public Queue<Pedido> colaPedidos = new LinkedList<>();
+    public List<Sector> listaSectores = new ArrayList<>();
+    public Stack<Pedido> historialPedidosPrograma = new Stack<>();
 
     //Lista de pedidos pendientes
 
     //Lista de pedidos realizados
 
-    //Defino la ubicación de mis archivos .txt
+    
     static Path pedidosSolicitados = Path.of("logiStore\\src\\Library\\Files\\pedidos.txt");
-    static Path historialPedidos = Path.of("logiStore\\src\\Library\\Files\\pedidos.txt");
+    static Path historialPedidos = Path.of("logiStore\\src\\Library\\Files\\historialDePedidos.txt");
 
 
     //ADMINISTRACIÓN DE SECTORES
     
-    //Se crea un sector con un identificador único
     public boolean crearSector(int idSector, String nombreSector){
         for(Sector sector : listaSectores){
-            if(idSector == sector.id){
+            if(sector.getId() == idSector){
                 System.out.println("El sector con el id "+ idSector + " ya existe.");
                 return false;
             }
@@ -63,29 +66,82 @@ public class Almacen {
         return true;
     }
 
-    public void eliminarSector(int id){
-        //Elimina un sector
+    public boolean eliminarSector(int idSector){
         for(Sector sector : listaSectores) {
-            if (sector.)
+            if (sector.getId() == idSector) {
+                listaSectores.remove(sector);
+                System.out.println("El sector se elimino correctamente.");
+                return true;
+            }
         }
+        System.out.println("No se encontró un sector con el id: " + idSector);
+        return false;
     }
 
     public void verSectores(){
-        //Lista todos los sectores
+        if (listaSectores.size() <= 0 ) {
+            System.out.println("La lista de sectores esta vacía");
+            return;
+        } 
+        System.out.println("Lista de sectores: ");
+        for (Sector sector : listaSectores) {
+            System.out.println("Sector: " + sector.getNombre() + " ID: " + sector.getId());
+        }    
     }
 
-    public void verProductos(){
-        //Lista los productos de un sector
+    public void verProductos(int idSector){
+        for (Sector sector : listaSectores) {
+            if (sector.getId() == idSector) {
+                sector.listarProducto();
+                return;
+            }
+        }
+        System.out.println("No se encontró un sector con el id: " + idSector);
     }
 
-    public void buscarProducto(){
-        //Busca un producto solicitado en los sectores
+    public boolean buscarProducto(int idSector, int idProducto){
+        for (Sector sector : listaSectores) {
+            if (sector.getId() == idSector) {
+                for (Producto producto : sector.getListaProductos()) {
+                    if (producto.getCodigo() == idProducto) {
+                        System.out.println("Se encontro el producto buscado en el sector: " + sector.getNombre());
+                        System.out.println("Nombre del producto: " + producto.getNombre() + " ID: " + producto.getCodigo() + " Stock: " + producto.getStock());
+                        return true;
+                    }
+                }
+                System.out.println("No se encontro un producto con el ID: " + idProducto);
+                return false;
+            }
+        }
+        System.out.println("No se encontro un sector con el ID: " + idSector);
+        return false;
     }
 
     //ADMINISTRACIÓN DE PEDIDOS
 
     public void realizarPedidos(){
-        //Realiza en órden los pedidos de la cola de pédidos de un sector
+        while (!colaPedidos.isEmpty()) {
+            Pedido pedido = colaPedidos.poll();
+            Producto producto = pedido.getProducto();
+
+            if (producto.getStock() >= pedido.getStock()) {
+                producto.setStock(producto.getStock() - pedido.getStock());
+                pedido.setEstado("Procesando");
+                System.out.println("Pedido procesado: " + pedido);
+
+                historialPedidosPrograma.push(pedido);
+                String registro = producto.getCodigo() + " | " + pedido.getStock() + " | " + producto.getSector().getNombre();
+
+                try {
+                    Files.writeString(historialPedidos, registro + System.lineSeparator());
+                } catch (IOException e) {
+                    System.err.println("Error al intentar guarrlo en el hostiral: " + e.getMessage());
+                }
+            } else {
+                pedido.setEstado("Rechazado - stock insuficiente");
+                System.out.println("No hay stock suficiente para el pedido: " + pedido);
+            }
+        }
     }
 
     //Lee el archivo "pedidos.txt" y lo imprime en consola de forma legible.
@@ -109,12 +165,12 @@ public class Almacen {
                 Producto productoEncontrado = null;
 
                 for(Sector sector : listaSectores){
-                    if(idSector == sector.id){
+                    if(sector.getId() == idSector){
                         sectorEncontrado = sector;
                         for(Producto producto : sector.listaProductos){
-                            if(idProducto == producto.codigo){
+                            if(producto.getCodigo() == idProducto){
                                 productoEncontrado = producto;
-                                System.out.println("SECTOR: " + sector.nombre + " | PRODUCTO: " + producto.nombre + " | STOCK REQUERIDO: " + stockRequerido);
+                                System.out.println("Sector: " + sector.getNombre() + " | Producto: " + producto.getNombre() + " | STOCK REQUERIDO: " + stockRequerido);
                             }
                         }
                     }

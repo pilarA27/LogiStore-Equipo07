@@ -2,10 +2,10 @@ package Library.Clases;
 
 
 public class Producto {
-    public String nombre;
-    public int codigo;
-    public int stock;
-    public Sector sector;
+    private String nombre;
+    private int codigo;
+    private int stock;
+    private Sector sector;
 
     public Producto(String nombre, int codigo, int stock, Sector sector){
         this.nombre = nombre;

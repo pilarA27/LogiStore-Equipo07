@@ -15,18 +15,36 @@ g) Atender pedidos en orden, eliminándolos a medida que se completan.
 h) Registrar pedidos procesados en un historial.
  */
 public class Sector {
-    public int id;
-    public String nombre;
-
+    private int id;
+    private String nombre;
 
     public List<Producto> listaProductos = new ArrayList<>();
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
 
     public Sector(int id, String nombre){
         this.nombre = nombre;
         this.id = id;
     }
 
+    public List<Producto> getListaProductos() {
+        return listaProductos;
+    }
+    
     //Se crea un nuevo producto
     public boolean nuevoProducto(String nombreProd, int codigoProd, int stockInicial){
         for(Producto producto : listaProductos){
@@ -72,6 +90,4 @@ public class Sector {
             System.out.println("Producto: " + producto.getNombre() + " Stock: " + producto.getStock() + " Sector: " + producto.getSector());
         }
     }
-
-
 }
