@@ -45,7 +45,6 @@ public class Sector {
         return listaProductos;
     }
     
-    //Se crea un nuevo producto
     public boolean nuevoProducto(String nombreProd, int codigoProd, int stockInicial){
         for(Producto producto : listaProductos){
             if (producto.getCodigo() == codigoProd){
@@ -58,7 +57,6 @@ public class Sector {
         return true;
     }
 
-    //Se agrega el stock deseado al producto de elección
     public boolean agregarProducto(int codigoProd, int stock){
         for(Producto producto : listaProductos){
             if(producto.getCodigo() == codigoProd){
@@ -71,7 +69,6 @@ public class Sector {
         return false;
     }
 
-    //Se elima un producto del sector
     public boolean eliminarProducto(int codigoProd){
         for(Producto producto : listaProductos){
             if(producto.getCodigo() == codigoProd){
