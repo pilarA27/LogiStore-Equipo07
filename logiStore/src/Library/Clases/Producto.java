@@ -1,6 +1,5 @@
 package Library.Clases;
 
-
 public class Producto {
     private String nombre;
     private int codigo;

@@ -1,6 +1,7 @@
 package Library.Clases;
 
 import java.io.IOException;
+import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -9,15 +10,12 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
+
 public class Almacen {
 
     public Queue<Pedido> colaPedidos = new LinkedList<>();
     public List<Sector> listaSectores = new ArrayList<>();
     public Stack<Pedido> historialPedidosPrograma = new Stack<>();
-
-    //Lista de pedidos pendientes
-
-    //Lista de pedidos realizados
 
     
     static Path pedidosSolicitados = Path.of("logiStore\\src\\Library\\Files\\pedidos.txt");
@@ -162,15 +160,52 @@ public class Almacen {
     }
 
     public void cargarEnHistorial(){
-        //Carga los pedidos realizados en "historialDePedidos.txt"
+        try (BufferedWriter writer = new BufferedWriter(new java.io.FileWriter(historialPedidos.toFile(), true))) {
+            for (Pedido pedido : historialPedidosPrograma) {
+                Producto producto = pedido.getProducto();
+                String registro = producto.getCodigo() + " | " + pedido.getStock() + " | " + producto.getSector().getNombre();
+                writer.write(registro);
+                writer.newLine();
+            }
+            System.out.println("Historial guardado correctamente.");
+        } catch (java.io.IOException e) {
+            System.err.println("Error al guardar el historial: " + e.getMessage());
+        }
     }
 
     public void leerHistorial(){
-        //Lee los pedidos realizados de "historialDePedidos.txt"
+        try {
+            List<String> lineas = Files.readAllLines(historialPedidos);
+            if (lineas.isEmpty()) {
+                System.out.println("El historial esta vacío");
+                return;
+            }
+            System.out.println("Historial de pedidos: ");
+            for (String linea : lineas) {
+                System.out.println(linea);
+            }
+        } catch (IOException e) {
+            System.err.println("Error al leer el historial");
+        }
     }
 
     public void revertirUltimoPedido(){
-        //Lee el historial de pedidos realizados, y revierte el último cambio
+        try {
+            List<String> lineas = Files.readAllLines(historialPedidos);
+            if (lineas.isEmpty()) {
+                System.out.println("El historial esta vacío");
+                return;
+            }
+            Pedido ultimoPedido = historialPedidosPrograma.peek();
+            Producto producto = ultimoPedido.getProducto();
+            producto.setStock(producto.getStock() + ultimoPedido.getStock());
+            historialPedidosPrograma.pop();
+            lineas.remove(lineas.size() - 1);
+            Files.write(historialPedidos, lineas);
+            System.out.println("Se revirtio el último pedido con exito!");
+        } catch (Exception e) {
+            System.err.println("Error al leer el historial");
+        }
     }
 
 }

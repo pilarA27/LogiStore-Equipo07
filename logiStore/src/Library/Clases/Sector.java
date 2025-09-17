@@ -3,17 +3,6 @@ package Library.Clases;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- 1. Implementar un simulador de almacén logístico que permita:
-a) Crear sectores en el almacén con un identificador único.
-b) Agregar productos a un sector indicando nombre, código, cantidad, ubicación.
-c) Buscar un producto en un sector.
-d) Eliminar un producto en un sector.
-e) Listar todos los productos de un sector.
-f) Procesar pedidos agregando los productos solicitados a un flujo de pedidos.
-g) Atender pedidos en orden, eliminándolos a medida que se completan.
-h) Registrar pedidos procesados en un historial.
- */
 public class Sector {
     private int id;
     private String nombre;
