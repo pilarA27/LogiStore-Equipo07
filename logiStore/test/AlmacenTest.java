@@ -1,22 +1,50 @@
 package logiStore.test;
 
+import Library.Clases.Almacen;
+import Library.Clases.Pedido;
+import Library.Clases.Producto;
+import Library.Clases.Sector;
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 public class AlmacenTest {
 
     @Test
     void crearSector(){
-        //Crea un sector donde el identificador sea único
+        Almacen almacen = new Almacen();
+
+        boolean creado = almacen.crearSector(1, "Deposito");
+        assertTrue(creado);
+        assertEquals(1, almacen.listaSectores.size());
+
+        boolean creadoDuplicado = almacen.crearSector(1, "Deposito 2");
+        assertFalse(creadoDuplicado);
+        assertEquals(1, almacen.listaSectores.size());
     }
 
     @Test
     void eliminarSector(){
-        //Elimina un sector
+        Almacen almacen = new Almacen();
+        almacen.crearSector(1, "Depósito)");
+
+        boolean eliminado = almacen.eliminarSector(1);
+        assertTrue(eliminado);
+        assertEquals(0, almacen.listaSectores.size());
+
+        assertFalse(almacen.eliminarSector(20));
     }
 
     @Test
     void verSectores(){
-        //Lista todos los sectores
+        Almacen almacen = new Almacen();
+
+        almacen.verSectores();
+
+        almacen.crearSector(1, "Depósito");
+        almacen.crearSector(2, "Depósito 2");
+
+        almacen.verSectores();
     }
 
     @Test
