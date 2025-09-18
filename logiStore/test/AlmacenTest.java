@@ -49,17 +49,40 @@ public class AlmacenTest {
 
     @Test
     void verProductos(){
-        //Lista los productos de un sector
+        Almacen almacen = new Almacen();
+        almacen.crearSector(1, "Depósito");
+        Sector sector = almacen.listaSectores.get(0);
+        sector.nuevoProducto("Martillo",20, 30 );
+        
+        almacen.verProductos(1);
+        
+        almacen.verProductos(30);
     }
 
     @Test
     void realizarPedidos(){
-        //Realiza en órden los pedidos de la cola de pédidos de un sector
+        Almacen almacen = new Almacen();
+        Sector sector = new Sector(1, "Depósito");
+        Producto producto = new Producto("Clavo", 30, 100, sector); 
+        sector.listaProductos.add(producto);
+        almacen.listaSectores.add(sector);
+
+        Pedido pedido = new Pedido(1, sector, producto, 30, "Nuevo");
+        almacen.colaPedidos.add(pedido);
+
+        Pedido pedido2 = new Pedido(2, sector, producto, 80, "Nuevo");
+        almacen.colaPedidos.add(pedido2);
+
+        almacen.realizarPedidos();
+
+        assertTrue(almacen.colaPedidos.isEmpty());
+        assertFalse(almacen.historialPedidosPrograma.isEmpty());
+        assertEquals(70, producto.getStock());
     }
 
     @Test
     void cargarEnHistorial(){
-        //Carga los pedidos realizados en "historialDePedidos.txt"
+        
     }
 
     @Test
