@@ -1,1 +1,1 @@
-## codigoProducto | cantidadSolicitada | sectorProducto ##
+30 | 5 | Depósito
