@@ -45,7 +45,7 @@ public class Sector {
         System.out.println("El producto " + nombreProd + " se agregó con exito.");
         return true;
     }
-
+    // Agrega stock a un producto existente
     public boolean agregarProducto(int codigoProd, int stock){
         for(Producto producto : listaProductos){
             if(producto.getCodigo() == codigoProd){
@@ -73,7 +73,7 @@ public class Sector {
     public void listarProducto() {
         System.out.println("Lista de productos:");
         for (Producto producto : listaProductos) {
-            System.out.println("Producto: " + producto.getNombre() + " Stock: " + producto.getStock() + " Sector: " + producto.getSector());
+            System.out.println("Producto: " + producto.getNombre() + " Stock: " + producto.getStock() + " Sector: " + producto.getSector().getNombre());
         }
     }
 }

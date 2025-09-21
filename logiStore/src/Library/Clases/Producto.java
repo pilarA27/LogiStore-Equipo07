@@ -63,4 +63,12 @@ public class Producto {
     public int hashCode() {
         return Integer.hashCode(codigo);
     }
+    public String toString() {
+        return "Producto{" +
+            "nombre='" + nombre + '\'' +
+            ", codigo=" + codigo +
+            ", stock=" + stock +
+            ", sector=" + (sector != null ? sector.getNombre() : "null") +
+            '}';
+    }
 }

@@ -87,6 +87,29 @@ public class Almacen {
         return false;
     }
 
+    //CREACIÓN DE PRODUCTOS
+    public boolean nuevoProducto(int idSector, String nombreProducto,  int stock){
+        for (Sector sector : listaSectores) {
+            if (sector.getId() == idSector) {
+                
+                int codigoUnico = 1;
+                for (Producto prod : sector.getListaProductos()) {
+                    if (prod.getCodigo() >= codigoUnico) {
+                        codigoUnico = prod.getCodigo() + 1;
+                    }
+                }
+
+                boolean resultado = sector.nuevoProducto(nombreProducto, codigoUnico, stock);
+                if (resultado) {
+                    System.out.println("Producto creado exitosamente en sector: " + sector.getNombre());
+                }
+                return resultado;
+            }
+        }
+        System.out.println("Error: No se encontró el sector con ID: " + idSector);
+        return false;
+    }
+
     //ADMINISTRACIÓN DE PEDIDOS
 
     public void realizarPedidos(){
@@ -99,30 +122,31 @@ public class Almacen {
                 pedido.setEstado("Procesando");
                 System.out.println("Pedido procesado: " + pedido);
 
+                // Solo agregar al historial en memoria
                 historialPedidosPrograma.push(pedido);
-                String registro = producto.getCodigo() + " | " + pedido.getStock() + " | " + producto.getSector().getNombre();
-
-                try {
-                    Files.writeString(historialPedidos, registro + System.lineSeparator());
-                } catch (IOException e) {
-                    System.err.println("Error al intentar guarrlo en el hostiral: " + e.getMessage());
-                }
             } else {
                 pedido.setEstado("Rechazado - stock insuficiente");
                 System.out.println("No hay stock suficiente para el pedido: " + pedido);
             }
+        }
+        
+        // Después de procesar todos los pedidos, guardar en archivo
+        if (!historialPedidosPrograma.isEmpty()) {
+            cargarEnHistorial();
         }
     }
 
     public void  leerPedidos(){
         try{
             List<String> lineas = Files.readAllLines(pedidosSolicitados);
+            int contadorPedidos = 1;
 
             for (String linea : lineas) {
                 String[] datos = linea.split(",");
 
                 if(datos.length != 3){
-                    System.out.println("# Pedido con formato incorrecto. #");
+                    System.out.println(" Pedido con formato incorrecto: " + linea + " - Se omite este pedido.");
+                    System.out.println("Recuerde que e");
                     continue;
                 }
 
@@ -139,23 +163,41 @@ public class Almacen {
                         for(Producto producto : sector.listaProductos){
                             if(producto.getCodigo() == idProducto){
                                 productoEncontrado = producto;
-                                System.out.println("Sector: " + sector.getNombre() + " | Producto: " + producto.getNombre() + " | STOCK REQUERIDO: " + stockRequerido);
+                                System.out.println("Pedido leído - Sector: " + sector.getNombre() + " | Producto: " + producto.getNombre() + " | Stock Requerido: " + stockRequerido);
+                                
+                                // Crear pedido y agregarlo a la cola
+                                Pedido nuevoPedido = new Pedido(contadorPedidos++, sectorEncontrado, productoEncontrado, stockRequerido, "Pendiente");
+                                colaPedidos.add(nuevoPedido);
+                                break;
                             }
                         }
+                        break;
                     }
                 }
 
                 if(sectorEncontrado == null){
-                    System.out.println("# No se encontró el sector #");
+                    System.out.println(" No se encontró el sector con ID: " + idSector );
                     continue;
                 }
 
                 if(productoEncontrado == null){
-                    System.out.println("# No se encontró el producto #");
+                    System.out.println(" No se encontró el producto con ID: " + idProducto + " en el sector " + idSector) ;
                 }
             }
+
+            // Procesar los pedidos que se cargaron en la cola
+            if (!colaPedidos.isEmpty()) {
+                realizarPedidos(); // Proceso los pedidos
+                
+                // Limpiar el archivo de pedidos después de procesarlos
+                Files.write(pedidosSolicitados, new ArrayList<String>());
+                System.out.println("Archivo de pedidos vacio.");
+            }
+
         }catch(IOException e) {
             System.err.println("Error al leer archivo: " + e.getMessage());
+        }catch(NumberFormatException e) {
+            System.err.println("Error en el formato de números en el archivo: " + e.getMessage());
         }
     }
 
@@ -163,11 +205,12 @@ public class Almacen {
         try (BufferedWriter writer = new BufferedWriter(new java.io.FileWriter(historialPedidos.toFile(), true))) {
             for (Pedido pedido : historialPedidosPrograma) {
                 Producto producto = pedido.getProducto();
-                String registro = producto.getCodigo() + " | " + pedido.getStock() + " | " + producto.getSector().getNombre();
+                String registro = producto.getCodigo() + " | " + pedido.getStock() + " | " + producto.getSector().getId();
                 writer.write(registro);
                 writer.newLine();
+                System.out.println("Registro guardado: " + registro);
             }
-            System.out.println("Historial guardado correctamente.");
+            System.out.println("Historial guardado correctamente en archivo.");
         } catch (java.io.IOException e) {
             System.err.println("Error al guardar el historial: " + e.getMessage());
         }
@@ -193,7 +236,7 @@ public class Almacen {
         try {
             List<String> lineas = Files.readAllLines(historialPedidos);
             if (lineas.isEmpty()) {
-                System.out.println("El historial esta vacío");
+                System.out.println("El historial esta vacio");
                 return;
             }
             Pedido ultimoPedido = historialPedidosPrograma.peek();
@@ -202,7 +245,7 @@ public class Almacen {
             historialPedidosPrograma.pop();
             lineas.remove(lineas.size() - 1);
             Files.write(historialPedidos, lineas);
-            System.out.println("Se revirtio el último pedido con exito!");
+            System.out.println("Se revirtio el último pedido con exito");
         } catch (Exception e) {
             System.err.println("Error al leer el historial");
         }
