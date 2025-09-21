@@ -91,7 +91,7 @@ public class Almacen {
     public boolean nuevoProducto(int idSector, String nombreProducto,  int stock){
         for (Sector sector : listaSectores) {
             if (sector.getId() == idSector) {
-                // Generar código único basado en productos existentes
+                
                 int codigoUnico = 1;
                 for (Producto prod : sector.getListaProductos()) {
                     if (prod.getCodigo() >= codigoUnico) {

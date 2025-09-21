@@ -31,7 +31,8 @@ public class Main {
             System.out.println("4. Listar Productos de un Sector");
             System.out.println("5. Procesar los pedidos del archivo");
             System.out.println("6. Ver Historial de Pedidos");
-            System.out.println("7. Salir");
+            System.out.println("7. Revertir ultimo pedido");
+            System.out.println("8. Salir");
 
 
             while(!in.hasNextInt()){
@@ -43,7 +44,7 @@ public class Main {
             try{
                 switch (opcion) {
                     case 1:
-                        // Crear Sectores
+                        
                         System.out.println("Ingrese el ID del nuevo sector:");
                         int idSector = in.nextInt();
                         in.nextLine();  // Limpiar el buffer
@@ -53,12 +54,12 @@ public class Main {
                         System.out.println("\n");
                         break;
                     case 2:
-                        // Listar Sectores
+                        
                         supermercado.verSectores();
                         System.out.println("\n");
                         break;
                     case 3:
-                        // Crear nuevo producto en un sector
+                       
                         System.out.println("Ingrese el ID del sector donde desea crear el producto:");
                         int idSectorNuevoProducto = in.nextInt();
                         in.nextLine();
@@ -77,7 +78,7 @@ public class Main {
                         break;
 
                     case 4:
-                        //Listar Productos de un Sector
+                        
                         System.out.println("Ingrese el ID del sector donde desea listar los productos:");
                         int idSectorListar = in.nextInt();
                         in.nextLine();
@@ -86,13 +87,13 @@ public class Main {
                         break;
                         
                     case 5:
-                        // Procesar los pedidos del archivo pedidos.txt
+                       
                     
                         supermercado.leerPedidos();
                         System.out.println("\n");
                         break;
                     case 6:
-                        // Ver Historial de Pedidos
+                        
                         supermercado.leerHistorial();
                         System.out.println("\n");
                         break;
@@ -101,12 +102,18 @@ public class Main {
                         System.out.println("Opción no válida. Por favor seleccione una opción del menú.");
                         break;
                     case 7:
+                        
+                        supermercado.revertirUltimoPedido();
+                        System.out.println("\n");
+                       
+                        break;
+                    case 8:
                         System.out.println("Gracias por utilizar LogiStore.");
                 }
             }catch (Exception e){
                 System.out.println("Ocurrió un error: " + e.getMessage());
             }
-          } while (opcion != 7);
+          } while (opcion != 8);
 
         in.close();
     }
