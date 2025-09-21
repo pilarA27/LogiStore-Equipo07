@@ -73,7 +73,7 @@ public class Sector {
     public void listarProducto() {
         System.out.println("Lista de productos:");
         for (Producto producto : listaProductos) {
-            System.out.println("Producto: " + producto.getNombre() + " Stock: " + producto.getStock() + " Sector: " + producto.getSector());
+            System.out.println("Producto: " + producto.getNombre() + " Stock: " + producto.getStock() + " Sector: " + producto.getSector().getNombre());
         }
     }
 }
