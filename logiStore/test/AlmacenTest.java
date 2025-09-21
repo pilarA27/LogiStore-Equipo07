@@ -26,7 +26,7 @@ public class AlmacenTest {
     @Test
     public void eliminarSector(){
         Almacen almacen = new Almacen();
-        almacen.crearSector(1, "Depósito)");
+        almacen.crearSector(1, "Depósito");
 
         boolean eliminado = almacen.eliminarSector(1);
         assertTrue(eliminado);
@@ -98,15 +98,15 @@ public class AlmacenTest {
             java.nio.file.Files.deleteIfExists(file);
             java.nio.file.Files.createFile(file);
         }catch (java.io.IOException e){
-            fail("No se pudo preparar el archilo de historial de Pedidos: " + e.getMessage());
+            fail("No se pudo preparar el archivo de historial de Pedidos: " + e.getMessage());
         }
         almacen.cargarEnHistorial();
 
         try{
             java.util.List<String> lineas = java.nio.file.Files.readAllLines(file);
             assertEquals(2, lineas.size());
-            assertTrue(lineas.contains("30 | 5 | Depósito"));
-            assertTrue(lineas.contains("30 | 7 | Depósito"));
+            assertTrue(lineas.contains("30 | 5 | 1"));
+            assertTrue(lineas.contains("30 | 7 | 1"));
         }catch(java.io.IOException e){
             fail("No se pudo leer el archivo de historial de Pedidos: "+ e.getMessage());
         }
@@ -128,8 +128,8 @@ public class AlmacenTest {
         try{
             java.nio.file.Files.createDirectories(file.getParent());
             java.util.List<String> preset = new java.util.ArrayList<>();
-            preset.add("30 | 5 | Depósito");
-            preset.add("30 | 7 | Depósito");
+            preset.add("30 | 5 | 1");
+            preset.add("30 | 7 | 1");
             java.nio.file.Files.write(file, preset);
         }catch (java.io.IOException e){
             fail("No se pudo preparar el archivo de historial de Pedidos para revertir: " + e.getMessage());
@@ -143,7 +143,7 @@ public class AlmacenTest {
         try{
             java.util.List<String> lineas = java.nio.file.Files.readAllLines(file);
             assertEquals(1, lineas.size());
-            assertEquals("30 | 5 | Depósito", lineas.get(0));
+            assertEquals("30 | 5 | 1", lineas.get(0));
         }catch(java.io.IOException e){
             fail("No se pudo leer el archivo del historial de Pedidos tras revertir: " + e.getMessage());
         }

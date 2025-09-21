@@ -87,6 +87,29 @@ public class Almacen {
         return false;
     }
 
+    //CREACIÓN DE PRODUCTOS
+    public boolean nuevoProducto(int idSector, String nombreProducto,  int stock){
+        for (Sector sector : listaSectores) {
+            if (sector.getId() == idSector) {
+                // Generar código único basado en productos existentes
+                int codigoUnico = 1;
+                for (Producto prod : sector.getListaProductos()) {
+                    if (prod.getCodigo() >= codigoUnico) {
+                        codigoUnico = prod.getCodigo() + 1;
+                    }
+                }
+
+                boolean resultado = sector.nuevoProducto(nombreProducto, codigoUnico, stock);
+                if (resultado) {
+                    System.out.println("Producto creado exitosamente en sector: " + sector.getNombre());
+                }
+                return resultado;
+            }
+        }
+        System.out.println("Error: No se encontró el sector con ID: " + idSector);
+        return false;
+    }
+
     //ADMINISTRACIÓN DE PEDIDOS
 
     public void realizarPedidos(){
@@ -123,7 +146,7 @@ public class Almacen {
 
                 if(datos.length != 3){
                     System.out.println(" Pedido con formato incorrecto: " + linea + " - Se omite este pedido.");
-                    System.out.println("Recuerde que el formato correcto es: idSector,idProducto,stockRequerido");
+                    System.out.println("Recuerde que e");
                     continue;
                 }
 
